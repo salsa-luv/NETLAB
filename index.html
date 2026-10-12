@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NETLAB - Simulasi Jaringan Komputer & Keamanan Data</title>
+    <!-- Tailwind CSS Styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .font-code { font-family: 'Fira Code', monospace; }
+        @keyframes packet-move {
+            0% { left: 0%; opacity: 0; }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { left: 100%; opacity: 0; }
+        }
+        .packet-animation { animation: packet-move 2s infinite linear; }
+    </style>
+</head>
+<body class="bg-[#0b0f19] text-slate-100 min-h-screen flex flex-col selection:bg-cyan-500 selection:text-black">
+
+    <!-- Header -->
+    <header class="border-b border-slate-800 bg-[#0b0f19]/90 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('home')">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center font-bold text-black text-xl shadow-lg shadow-cyan-500/20">
+                    NL
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-wider text-white">NET<span class="text-cyan-400">LAB</span></h1>
+                    <p class="text-xs text-slate-400">Simulasi Jaringan & Keamanan Data</p>
+                </div>
+            </div>
+            <!-- Navigation Menu -->
+            <nav class="flex items-center gap-2 bg-slate-900/80 p-1.5 rounded-xl border border-slate-800">
+                <button onclick="switchTab('home')" id="nav-home" class="px-4 py-2 rounded-lg text-sm font-medium transition-all bg-cyan-500 text-black shadow-md shadow-cyan-500/20 font-bold">Beranda</button>
+                <button onclick="switchTab('modul1')" id="nav-modul1" class="px-4 py-2 rounded-lg text-sm font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800">1. Hacking HP</button>
+                <button onclick="switchTab('modul2')" id="nav-modul2" class="px-4 py-2 rounded-lg text-sm font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800">2. Keamanan Data</button>
+                <button onclick="switchTab('modul3')" id="nav-modul3" class="px-4 py-2 rounded-lg text-sm font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800">3. Pelacakan IP</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto p-4 sm:p-6">
+
+        <!-- HOME TAB -->
+        <section id="tab-home" class="space-y-8 py-4">
+            <div class="text-center max-w-3xl mx-auto space-y-4">
+                <span class="px-3 py-1 rounded-full text-xs font-semibold bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">Praktikum Jaringan Komputer & Komunikasi Data</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">Laboratorium Simulasi Interaktif</h2>
+                <p class="text-slate-400 text-sm sm:text-base">
+                    Pilih skenario simulasi di bawah ini untuk memahami konsep peretasan perangkat, enkripsi komunikasi data, dan pelacakan posisi berbasis IP secara visual dan langsung.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
+                <div onclick="switchTab('modul1')" class="group bg-slate-900/90 border border-slate-800 rounded-2xl p-6 hover:border-cyan-500/50 transition-all duration-300 cursor-pointer hover:shadow-xl hover:shadow-cyan-500/10 flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-xl font-bold group-hover:scale-110 transition-transform">01</div>
+                        <h3 class="text-xl font-bold text-white group-hover:text-cyan-400 transition-colors">Simulasi Hacking HP</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">Menunjukkan ancaman data pada HP dengan perlindungan lemah vs pertahanan aman.</p>
+                    </div>
+                    <div class="pt-6 flex items-center text-cyan-400 text-sm font-semibold group-hover:translate-x-2 transition-transform">Mulai Simulasi &rarr;</div>
+                </div>
+
+                <div onclick="switchTab('modul2')" class="group bg-slate-900/90 border border-slate-800 rounded-2xl p-6 hover:border-blue-500/50 transition-all duration-300 cursor-pointer hover:shadow-xl hover:shadow-blue-500/10 flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <div class="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400 text-xl font-bold group-hover:scale-110 transition-transform">02</div>
+                        <h3 class="text-xl font-bold text-white group-hover:text-blue-400 transition-colors">Simulasi Keamanan Komunikasi Data</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">Perjalanan pesan, pengamat jaringan, proses encoding Base64, dan enkripsi aman AES-GCM.</p>
+                    </div>
+                    <div class="pt-6 flex items-center text-blue-400 text-sm font-semibold group-hover:translate-x-2 transition-transform">Mulai Simulasi &rarr;</div>
+                </div>
+
+                <div onclick="switchTab('modul3')" class="group bg-slate-900/90 border border-slate-800 rounded-2xl p-6 hover:border-cyan-500/50 transition-all duration-300 cursor-pointer hover:shadow-xl hover:shadow-cyan-500/10 flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-xl font-bold group-hover:scale-110 transition-transform">03</div>
+                        <h3 class="text-xl font-bold text-white group-hover:text-cyan-400 transition-colors">Simulasi Pelacakan IP Address</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">Dari postingan media sosial, log server, alamat IP fiktif, hingga tahapan GeoIP ke peta.</p>
+                    </div>
+                    <div class="pt-6 flex items-center text-cyan-400 text-sm font-semibold group-hover:translate-x-2 transition-transform">Mulai Simulasi &rarr;</div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- MODULE 1: SIMULASI HACKING HP (BERTAHAP DENGAN VISUALISASI PROSES TIAP TAHAP) -->
+        <section id="tab-modul1" class="hidden space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+                <div>
+                    <span class="text-xs font-semibold text-cyan-400 tracking-wider uppercase">Modul 01</span>
+                    <h2 class="text-2xl font-bold text-white">Simulasi Hacking HP & Perlindungan Perangkat</h2>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="modul1Reset()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-sm font-medium transition">Reset</button>
+                    <button onclick="modul1NextStep()" class="px-4 py-1.5 bg-cyan-500 hover:bg-cyan-400 text-black rounded-lg text-sm font-bold transition shadow-lg shadow-cyan-500/20">Langkah Berikutnya &rarr;</button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                <!-- Control Panel & Step Indicators -->
+                <div class="lg:col-span-1 space-y-4 bg-slate-900/80 p-5 rounded-2xl border border-slate-800">
+                    <h3 class="text-sm font-semibold text-slate-300 uppercase tracking-wider">Pengaturan Simulasi</h3>
+                    <div class="space-y-2">
+                        <label class="text-xs text-slate-400">Pilih Mode Keamanan Target:</label>
+                        <div class="grid grid-cols-1 gap-2">
+                            <button onclick="setModul1Mode('minim')" id="btn-mode-minim" class="p-3 rounded-xl border text-left transition-all bg-cyan-500/10 border-cyan-500 text-cyan-300 font-medium text-sm">
+                                1. Keamanan Minim
+                                <div class="text-xs font-normal text-slate-400 mt-0.5">Layanan lemah tanpa autentikasi kuat</div>
+                            </button>
+                            <button onclick="setModul1Mode('baik')" id="btn-mode-baik" class="p-3 rounded-xl border text-left transition-all bg-slate-800/50 border-slate-700 text-slate-400 font-medium text-sm">
+                                2. Keamanan Baik
+                                <div class="text-xs font-normal text-slate-400 mt-0.5">Autentikasi kuat & izin aplikasi dibatasi</div>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pt-2">
+                        <button onclick="modul1Start()" class="w-full py-3 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-black font-bold rounded-xl shadow-lg shadow-cyan-500/20 transition">
+                            Mulai (Tahap 1)
+                        </button>
+                    </div>
+                    <div class="pt-4 border-t border-slate-800 text-xs text-slate-400 space-y-2">
+                        <div class="font-semibold text-slate-300">Indikator Tahapan:</div>
+                        <div class="space-y-1.5" id="modul1-steps-list">
+                            <div id="m1-step-1" class="p-2 rounded-lg bg-slate-950 border border-slate-800 transition-all">1. Pemindaian Port Target</div>
+                            <div id="m1-step-2" class="p-2 rounded-lg bg-slate-950 border border-slate-800 transition-all opacity-50">2. Analisis Layanan & Celah</div>
+                            <div id="m1-step-3" class="p-2 rounded-lg bg-slate-950 border border-slate-800 transition-all opacity-50">3. Evaluasi Keamanan Sistem</div>
+                            <div id="m1-step-4" class="p-2 rounded-lg bg-slate-950 border border-slate-800 transition-all opacity-50">4. Eksekusi Akses & Status Data</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Visual Area -->
+                <div class="lg:col-span-3 bg-slate-900/80 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between relative overflow-hidden">
+                    
+                    <!-- Top Visual Grid: Devices & Active Step Monitor -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center relative z-10 my-auto">
+                        <!-- Attacker Console -->
+                        <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-4 shadow-xl">
+                            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-3 h-3 rounded-full bg-red-500 animate-pulse"></div>
+                                    <span class="text-xs font-bold text-red-400 uppercase tracking-wider">Perangkat Penyerang</span>
+                                </div>
+                                <span class="text-xs font-mono text-slate-500">192.168.1.99</span>
+                            </div>
+                            <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 font-code text-xs text-slate-300 h-36 overflow-y-auto space-y-1" id="attacker-console">
+                                <span class="text-slate-500">// Tekan "Mulai (Tahap 1)" atau "Langkah Berikutnya"...</span>
+                            </div>
+                        </div>
+
+                        <!-- Target Phone -->
+                        <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-4 shadow-xl max-w-sm mx-auto w-full">
+                            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-3 h-3 rounded-full bg-cyan-400" id="phone-status-dot"></div>
+                                    <span class="text-xs font-bold text-cyan-400 uppercase tracking-wider">HP Target (Demo)</span>
+                                </div>
+                                <span class="text-xs font-mono text-yellow-400" id="phone-mode-badge">Mode: Minim</span>
+                            </div>
+
+                            <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 space-y-3">
+                                <div class="text-xs text-slate-400 font-medium">Contoh Data di HP Target:</div>
+                                <div class="grid grid-cols-2 gap-2" id="phone-data-grid">
+                                    <div class="bg-slate-800/60 p-2.5 rounded-lg text-center text-xs text-slate-300 transition-all duration-300 phone-data-item">🖼️ Galeri Foto</div>
+                                    <div class="bg-slate-800/60 p-2.5 rounded-lg text-center text-xs text-slate-300 transition-all duration-300 phone-data-item">📇 Kontak</div>
+                                    <div class="bg-slate-800/60 p-2.5 rounded-lg text-center text-xs text-slate-300 transition-all duration-300 phone-data-item">💬 Pesan</div>
+                                    <div class="bg-slate-800/60 p-2.5 rounded-lg text-center text-xs text-slate-300 transition-all duration-300 phone-data-item">📁 File Pribadi</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Process Visualizer Box (Tampilan Visual Proses Internal untuk Setiap Tahap) -->
+                    <div class="mt-6 bg-slate-950 p-4 rounded-xl border border-slate-800 relative z-10 space-y-2">
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+                            <span class="text-xs font-bold text-cyan-400 uppercase tracking-wider">🔍 Visualisasi Proses Internal Skenario</span>
+                            <span class="text-xs font-mono text-slate-400" id="m1-current-step-label">Tahap: 0/4</span>
+                        </div>
+                        <div id="m1-process-display" class="bg-slate-900/90 p-3 rounded-lg border border-slate-800/80 text-xs text-slate-300 min-h-[60px] flex items-center justify-center text-center">
+                            <span class="text-slate-500">Pilih mode keamanan lalu tekan "Mulai (Tahap 1)" untuk melihat proses internal.</span>
+                        </div>
+                    </div>
+
+                    <!-- Result Panel -->
+                    <div class="mt-4 bg-slate-950 p-4 rounded-xl border border-slate-800 relative z-10" id="modul1-result-box">
+                        <div class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-1">Ringkasan Hasil Simulasi:</div>
+                        <p class="text-sm text-slate-300" id="modul1-result-text">Tekan tombol <span class="text-cyan-400 font-bold">"Langkah Berikutnya"</span> untuk melanjutkan tahapan simulasi.</p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+
+        <!-- MODULE 2: SIMULASI KEAMANAN KOMUNIKASI DATA -->
+        <section id="tab-modul2" class="hidden space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+                <div>
+                    <span class="text-xs font-semibold text-blue-400 tracking-wider uppercase">Modul 02</span>
+                    <h2 class="text-2xl font-bold text-white">Simulasi Keamanan Komunikasi Data & Enkripsi</h2>
+                </div>
+                <div class="flex items-center gap-2 flex-wrap">
+                    <button onclick="modul2Reset()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-sm font-medium transition">Reset</button>
+                    <button onclick="modul2RunAll()" class="px-4 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-sm font-bold transition shadow-lg shadow-blue-600/20">Jalankan Semua</button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                <div class="lg:col-span-1 space-y-4 bg-slate-900/80 p-5 rounded-2xl border border-slate-800">
+                    <h3 class="text-sm font-semibold text-slate-300 uppercase tracking-wider">Parameter Pengiriman</h3>
+                    <div class="space-y-2">
+                        <label class="text-xs text-slate-400">Pesan Rahasia (Ketik Sendiri):</label>
+                        <input type="text" id="custom-message-input" value="Halo, kirim data penting jam 3 sore ini!" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-xs text-slate-400">Pilih Mode Komunikasi:</label>
+                        <div class="grid grid-cols-1 gap-2">
+                            <button onclick="setModul2Mode('tanpa')" id="btn-mode-tanpa" class="p-3 rounded-xl border text-left transition-all bg-slate-800/50 border-slate-700 text-slate-400 font-medium text-sm">
+                                1. Tanpa Enkripsi
+                                <div class="text-xs font-normal text-slate-400 mt-0.5">Pesan terbaca jelas oleh pengamat</div>
+                            </button>
+                            <button onclick="setModul2Mode('dengan')" id="btn-mode-dengan" class="p-3 rounded-xl border text-left transition-all bg-blue-500/10 border-blue-500 text-blue-300 font-medium text-sm">
+                                2. Dengan Enkripsi (AES-GCM)
+                                <div class="text-xs font-normal text-slate-400 mt-0.5">Aman dengan kunci sesi & integritas</div>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pt-2 flex flex-col gap-2">
+                        <button onclick="modul2Send()" class="w-full py-3 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-black font-bold rounded-xl shadow-lg shadow-blue-500/20 transition">
+                            Kirim Pesan
+                        </button>
+                        <button onclick="modul2TamperData()" class="w-full py-2.5 bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-400 font-semibold rounded-xl text-xs transition">
+                            ⚠️ Simulasikan Perubahan Data
+                        </button>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-3 space-y-6">
+                    <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 relative overflow-hidden">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center relative z-10">
+                            <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-3 text-center">
+                                <div class="text-2xl">📱</div>
+                                <div class="text-xs font-bold text-slate-200 uppercase">HP Pengirim</div>
+                                <div class="bg-slate-900 p-2.5 rounded-lg border border-slate-800 text-xs font-code text-cyan-400 break-words" id="sender-box-msg">[Pesan Asli]</div>
+                            </div>
+
+                            <div class="space-y-4 text-center">
+                                <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Jalur Transmisi Jaringan</div>
+                                <div class="h-12 bg-slate-950 rounded-xl border border-slate-800 relative flex items-center px-4 overflow-hidden">
+                                    <div class="absolute w-3 h-3 rounded-full bg-blue-400 packet-animation"></div>
+                                    <span class="text-xs font-mono text-slate-500 mx-auto" id="channel-data-view">Packet Data Stream...</span>
+                                </div>
+                                <div class="bg-red-500/10 border border-red-500/30 p-3 rounded-xl space-y-1">
+                                    <div class="text-red-400 text-xs font-bold">👁️ Pengamat Jaringan (Sniffer)</div>
+                                    <div class="text-xs font-code text-slate-300 bg-slate-950 p-2 rounded border border-red-500/20 break-words" id="observer-view">Menunggu data melintas...</div>
+                                </div>
+                            </div>
+
+                            <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-3 text-center">
+                                <div class="text-2xl">📱</div>
+                                <div class="text-xs font-bold text-slate-200 uppercase">HP Penerima</div>
+                                <div class="bg-slate-900 p-2.5 rounded-lg border border-slate-800 text-xs font-code text-cyan-400 break-words" id="receiver-box-msg">[Menunggu Pesan]</div>
+                            </div>
+                        </div>
+
+                        <!-- Data Process Panel -->
+                        <div class="mt-6 border-t border-slate-800 pt-4">
+                            <div class="flex items-center justify-between cursor-pointer" onclick="toggleDataProcessPanel()">
+                                <span class="text-xs font-bold text-slate-300 uppercase tracking-wider">🔍 Lihat Proses Data (Encoding vs Enkripsi)</span>
+                                <span class="text-xs text-cyan-400" id="process-toggle-icon">[ Buka Panel ]</span>
+                            </div>
+                            <div class="hidden mt-3 grid grid-cols-1 sm:grid-cols-5 gap-3 text-xs" id="data-process-panel">
+                                <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 space-y-1">
+                                    <div class="font-bold text-slate-300">Langkah 1</div>
+                                    <div class="text-slate-400">Pesan Asli</div>
+                                    <div class="font-code text-cyan-400 pt-1" id="proc-step-1">-</div>
+                                </div>
+                                <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 space-y-1">
+                                    <div class="font-bold text-slate-300">Langkah 2</div>
+                                    <div class="text-slate-400">Encoding (Base64)</div>
+                                    <div class="font-code text-yellow-400 pt-1 break-all" id="proc-step-2">-</div>
+                                    <div class="text-[10px] text-slate-500 mt-1">Hanya representasi, bukan keamanan!</div>
+                                </div>
+                                <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 space-y-1">
+                                    <div class="font-bold text-slate-300">Langkah 3</div>
+                                    <div class="text-slate-400">Decoding</div>
+                                    <div class="font-code text-slate-300 pt-1" id="proc-step-3">-</div>
+                                </div>
+                                <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 space-y-1">
+                                    <div class="font-bold text-slate-300">Langkah 4</div>
+                                    <div class="text-slate-400">Enkripsi (AES-GCM)</div>
+                                    <div class="font-code text-blue-400 pt-1" id="proc-step-4">-</div>
+                                </div>
+                                <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 space-y-1">
+                                    <div class="font-bold text-slate-300">Langkah 5</div>
+                                    <div class="text-slate-400">Dekripsi & Hasil</div>
+                                    <div class="font-code text-green-400 pt-1" id="proc-step-5">-</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 bg-slate-950 p-4 rounded-xl border border-slate-800">
+                            <div class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-1">Ringkasan Hasil Komunikasi:</div>
+                            <p class="text-sm text-slate-300" id="modul2-result-text">Tekan tombol <span class="text-blue-400 font-bold">"Kirim Pesan"</span> atau <span class="text-blue-400 font-bold">"Jalankan Semua"</span> untuk memulai.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- MODULE 3: SIMULASI PELACAKAN IP ADDRESS -->
+        <section id="tab-modul3" class="hidden space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+                <div>
+                    <span class="text-xs font-semibold text-cyan-400 tracking-wider uppercase">Modul 03</span>
+                    <h2 class="text-2xl font-bold text-white">Simulasi Penelusuran Posisi Pengguna dari IP Address</h2>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="modul3Reset()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-sm font-medium transition">Reset</button>
+                    <button onclick="modul3NextStep()" class="px-4 py-1.5 bg-cyan-500 hover:bg-cyan-400 text-black rounded-lg text-sm font-bold transition shadow-lg shadow-cyan-500/20">Langkah Berikutnya</button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                <div class="lg:col-span-1 space-y-4 bg-slate-900/80 p-5 rounded-2xl border border-slate-800">
+                    <h3 class="text-sm font-semibold text-slate-300 uppercase tracking-wider">Tahapan Penelusuran</h3>
+                    <div class="space-y-2 text-xs text-slate-400">
+                        <div class="p-3 rounded-xl bg-slate-950 border border-slate-800" id="m3-stage-indicator-1"><span class="font-bold text-cyan-400">Tahap 1:</span> Postingan Media Sosial.</div>
+                        <div class="p-3 rounded-xl bg-slate-950 border border-slate-800 opacity-60" id="m3-stage-indicator-2"><span class="font-bold text-cyan-400">Tahap 2:</span> Log Server & IP Fiktif.</div>
+                        <div class="p-3 rounded-xl bg-slate-950 border border-slate-800 opacity-60" id="m3-stage-indicator-3"><span class="font-bold text-cyan-400">Tahap 3:</span> Proses GeoIP & Peta.</div>
+                        <div class="p-3 rounded-xl bg-slate-950 border border-slate-800 opacity-60" id="m3-stage-indicator-4"><span class="font-bold text-cyan-400">Tahap 4:</span> Kesimpulan & Batasan.</div>
+                    </div>
+                    <button onclick="modul3Start()" class="w-full py-3 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-black font-bold rounded-xl shadow-lg shadow-cyan-500/20 transition">Mulai Penelusuran</button>
+                </div>
+
+                <div class="lg:col-span-3 space-y-6">
+                    <!-- Stage 1 -->
+                    <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 space-y-6" id="m3-view-stage1">
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                            <span class="text-xs font-bold text-cyan-400 uppercase tracking-wider">Mockup Aplikasi Media Sosial</span>
+                        </div>
+                        <div class="max-w-md mx-auto bg-slate-950 border border-slate-800 rounded-2xl p-5 space-y-4">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-cyan-500 to-blue-500 flex items-center justify-center font-bold text-black text-sm">AD</div>
+                                <div>
+                                    <div class="text-sm font-bold text-white">@andi_demo</div>
+                                    <div class="text-xs text-slate-400">2 jam yang lalu • 📍 Bandar Lampung</div>
+                                </div>
+                            </div>
+                            <div class="bg-slate-900 h-40 rounded-xl border border-slate-800 flex items-center justify-center text-slate-500 text-sm">
+                                [ Ilustrasi Postingan: "Lagi jalan-jalan sore." ]
+                            </div>
+                            <p class="text-sm text-slate-200">Lagi jalan-jalan sore menikmati suasana kota. 🌅☕</p>
+                        </div>
+                        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
+                            <div class="text-xs font-bold text-yellow-400">Informasi Konsep:</div>
+                            <p class="text-xs text-slate-400">Melihat postingan media sosial biasa tidak akan memperlihatkan alamat IP pengunggah kepada pengguna lain karena dilindungi oleh server platform.</p>
+                        </div>
+                    </div>
+
+                    <!-- Stage 2 -->
+                    <div class="hidden bg-slate-900/80 border border-slate-800 rounded-2xl p-6 space-y-4" id="m3-view-stage2">
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                            <span class="text-xs font-bold text-cyan-400 uppercase tracking-wider">Log Server (Pencatatan IP Koneksi Simulasi)</span>
+                            <span class="text-xs text-emerald-400 font-mono">Status: Tercatat</span>
+                        </div>
+                        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 font-code text-xs space-y-2">
+                            <div class="text-slate-300">Timestamp : <span class="text-cyan-400">2026-10-12 16:45:12 UTC</span></div>
+                            <div class="text-slate-300">Source IP : <span class="text-yellow-400 font-bold">203.0.113.18</span> <span class="text-xs text-slate-500">(IP FIKTIF DOKUMENTASI)</span></div>
+                            <div class="text-slate-300">Target Host : <span class="text-blue-400">netlab-demo.local</span></div>
+                        </div>
+                        <p class="text-xs text-slate-400">Apabila terdapat koneksi langsung ke server (misal melalui server uji yang dikelola), alamat IP sumber dapat dicatat oleh server.</p>
+                    </div>
+
+                    <!-- Stage 3 -->
+                    <div class="hidden bg-slate-900/80 border border-slate-800 rounded-2xl p-6 space-y-5" id="m3-view-stage3">
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                            <span class="text-xs font-bold text-cyan-400 uppercase tracking-wider">Tahapan Proses IP Address Menuju Lokasi (GeoIP Lookup)</span>
+                            <button onclick="showGeolocation()" class="px-3 py-1 bg-cyan-500 hover:bg-cyan-400 text-black text-xs font-bold rounded-lg transition">Jalankan Proses GeoIP</button>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs" id="geoip-steps-container">
+                            <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 space-y-1">
+                                <div class="text-slate-500 font-bold">Langkah A</div>
+                                <div class="text-slate-300 font-semibold">1. Ekstraksi IP</div>
+                                <div class="text-slate-400 text-[11px]">Mendapatkan IP sumber: <code class="text-yellow-400">203.0.113.18</code> dari log server.</div>
+                            </div>
+                            <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 space-y-1">
+                                <div class="text-slate-500 font-bold">Langkah B</div>
+                                <div class="text-slate-300 font-semibold">2. Query Database ISP</div>
+                                <div class="text-slate-400 text-[11px]">Mencocokkan blok alamat IP dengan database pendaftar / ISP lokal.</div>
+                            </div>
+                            <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 space-y-1">
+                                <div class="text-slate-500 font-bold">Langkah C</div>
+                                <div class="text-slate-300 font-semibold">3. Estimasi Koordinat</div>
+                                <div class="text-slate-400 text-[11px]">Memetakan wilayah administratif kota / region.</div>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-950 h-44 rounded-xl border border-slate-800 relative flex items-center justify-center text-center p-4">
+                            <div class="space-y-1.5 relative z-10">
+                                <div class="text-cyan-400 text-2xl animate-bounce">📍</div>
+                                <div class="text-sm font-bold text-white" id="geo-result-title">Menunggu Proses GeoIP...</div>
+                                <div class="text-xs text-slate-400" id="geo-result-desc">Klik tombol "Jalankan Proses GeoIP" di atas untuk melihat hasil pemetaan.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stage 4 -->
+                    <div class="hidden bg-slate-900/80 border border-slate-800 rounded-2xl p-6 space-y-4" id="m3-view-stage4">
+                        <div class="border-b border-slate-800 pb-3 text-xs font-bold text-cyan-400 uppercase">Kesimpulan & Keterbatasan</div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                            <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
+                                <div class="font-bold text-slate-200 mb-1">Postingan Media Sosial</div>
+                                <p class="text-slate-400">IP pengunggah disembunyikan oleh platform dan tidak dapat diakses pengguna biasa.</p>
+                            </div>
+                            <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
+                                <div class="font-bold text-slate-200 mb-1">Server Log & GeoIP</div>
+                                <p class="text-slate-400">Server mencatat IP sumber yang dapat diperkirakan lokasinya hingga tingkat kota/ISP.</p>
+                            </div>
+                        </div>
+                        <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 text-[11px] text-slate-400">
+                            ⚠️ <span class="font-semibold text-slate-300">Catatan:</span> Penggunaan VPN, jaringan seluler, CGNAT, atau IP dinamis membuat perkiraan lokasi tidak selalu akurat.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800 bg-[#0b0f19] py-6 text-center text-xs text-slate-500">
+        <p>NETLAB • Tugas Mata Kuliah Jaringan Komputer & Komunikasi Data</p>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        function switchTab(tabId) {
+            ['home', 'modul1', 'modul2', 'modul3'].forEach(id => {
+                const el = document.getElementById('tab-' + id);
+                const nav = document.getElementById('nav-' + id);
+                if (el) el.classList.add('hidden');
+                if (nav) nav.className = "px-4 py-2 rounded-lg text-sm font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800";
+            });
+            document.getElementById('tab-' + tabId).classList.remove('hidden');
+            document.getElementById('nav-' + tabId).className = "px-4 py-2 rounded-lg text-sm font-medium transition-all bg-cyan-500 text-black shadow-md shadow-cyan-500/20 font-bold";
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // --- Modul 1 (Hacking HP - Dijalankan BERTAHAP dengan Visualisasi Proses Internal) ---
+        let modul1Mode = 'minim';
+        let modul1CurrentStep = 0;
+
+        function setModul1Mode(mode) {
+            modul1Mode = mode;
+            document.getElementById('btn-mode-minim').className = mode === 'minim' ? "p-3 rounded-xl border text-left bg-cyan-500/10 border-cyan-500 text-cyan-300 font-medium text-sm" : "p-3 rounded-xl border text-left bg-slate-800/50 border-slate-700 text-slate-400 text-sm";
+            document.getElementById('btn-mode-baik').className = mode === 'baik' ? "p-3 rounded-xl border text-left bg-cyan-500/10 border-cyan-500 text-cyan-300 font-medium text-sm" : "p-3 rounded-xl border text-left bg-slate-800/50 border-slate-700 text-slate-400 text-sm";
+            document.getElementById('phone-mode-badge').innerText = mode === 'minim' ? "Mode: Minim" : "Mode: Aman";
+            document.getElementById('phone-mode-badge').className = mode === 'minim' ? "text-xs font-mono text-yellow-400" : "text-xs font-mono text-cyan-400";
+            modul1Reset();
+        }
+
+        function modul1Reset() {
+            modul1CurrentStep = 0;
+            document.getElementById('attacker-console').innerHTML = `<span class="text-slate-500">// Menunggu aksi simulasi...</span>`;
+            document.getElementById('m1-process-display').innerHTML = `<span class="text-slate-500">Pilih mode keamanan lalu tekan "Mulai (Tahap 1)" untuk melihat proses internal.</span>`;
+            document.getElementById('modul1-result-text').innerHTML = `Simulasi direset. Tekan <span class="text-cyan-400 font-bold">"Mulai (Tahap 1)"</span> atau <span class="text-cyan-400 font-bold">"Langkah Berikutnya"</span>.`;
+            document.getElementById('m1-current-step-label').innerText = "Tahap: 0/4";
+
+            // Reset indikator langkah
+            for(let i=1; i<=4; i++) {
+                const el = document.getElementById('m1-step-'+i);
+                el.className = "p-2 rounded-lg bg-slate-950 border border-slate-800 transition-all opacity-50 text-slate-400";
+            }
+
+            // Reset warna data HP ke abu-abu normal
+            const items = document.querySelectorAll('.phone-data-item');
+            items.forEach(item => {
+                item.className = "bg-slate-800/60 p-2.5 rounded-lg text-center text-xs text-slate-300 transition-all duration-300 phone-data-item";
+            });
+        }
+
+        function modul1Start() {
+            modul1CurrentStep = 1;
+            renderModul1Step();
+        }
+
+        function modul1NextStep() {
+            if (modul1CurrentStep < 4) {
+                modul1CurrentStep++;
+                renderModul1Step();
+            }
+        }
+
+        // Fungsi utama untuk merender tampilan visual & konsol secara BERTAHAP
+        function renderModul1Step() {
+            const consoleEl = document.getElementById('attacker-console');
+            const processEl = document.getElementById('m1-process-display');
+            const resultEl = document.getElementById('modul1-result-text');
+            const stepLabel = document.getElementById('m1-current-step-label');
+            const items = document.querySelectorAll('.phone-data-item');
+
+            stepLabel.innerText = `Tahap: ${modul1CurrentStep}/4`;
+
+            // Highlight indikator langkah aktif
+            for(let i=1; i<=4; i++) {
+                const el = document.getElementById('m1-step-'+i);
+                if (i <= modul1CurrentStep) {
+                    el.className = "p-2 rounded-lg bg-cyan-500/10 border border-cyan-500/50 font-bold text-cyan-300 transition-all opacity-100";
+                } else {
+                    el.className = "p-2 rounded-lg bg-slate-950 border border-slate-800 transition-all opacity-50 text-slate-400";
+                }
+            }
+
+            // TAMPILAN VISUAL DITERAPKAN BERTAHAP UNTUK MASING-MASING TAHAP:
+            if (modul1CurrentStep === 1) {
+                // TAHAP 1: Pemindaian Target
+                consoleEl.innerHTML = `<span class="text-cyan-400">></span> [Tahap 1] Memindai port jaringan terbuka pada IP 192.168.1.55...`;
+                processEl.innerHTML = `
+                    <div class="w-full space-y-1">
+                        <div class="text-xs font-bold text-cyan-400">📡 PROSES TAHAP 1: PEMINDAIAN JARINNGAN (PORT SCAN)</div>
+                        <div class="text-slate-300 text-[11px]">Penyerang mengirim paket SYN/ACK untuk mencari port terbuka pada HP target.</div>
+                        <div class="bg-slate-950 p-2 rounded border border-cyan-500/30 text-yellow-300 font-mono text-[11px]">SYN 192.168.1.55:8080 -> PORT OPEN (TCP Listener Detected)</div>
+                    </div>
+                `;
+                resultEl.innerHTML = `Tahap 1 Selesai: Port target terdeteksi terbuka. Tekan <span class="text-cyan-400 font-bold">"Langkah Berikutnya"</span> untuk lanjut ke Tahap 2.`;
+            } 
+            else if (modul1CurrentStep === 2) {
+                // TAHAP 2: Analisis Layanan & Celah
+                if (modul1Mode === 'minim') {
+                    consoleEl.innerHTML += `<br><span class="text-yellow-400">></span> [Tahap 2] Mendeteksi kerentanan: Layanan tanpa autentikasi!`;
+                    processEl.innerHTML = `
+                        <div class="w-full space-y-1">
+                            <div class="text-xs font-bold text-yellow-400">🔍 PROSES TAHAP 2: ANALISIS KERENTANAN LAYANAN (VULNERABILITY)</div>
+                            <div class="text-slate-300 text-[11px]">Memeriksa konfigurasi aplikasi internal di HP Target.</div>
+                            <div class="bg-slate-950 p-2 rounded border border-yellow-500/30 text-red-400 font-mono text-[11px]">HASIL: Versi Layanan Usang v1.0 • Autentikasi: DISABLED • Celah: Bypass Permission</div>
+                        </div>
+                    `;
+                } else {
+                    consoleEl.innerHTML += `<br><span class="text-blue-400">></span> [Tahap 2] Memeriksa layanan: Sistem menggunakan patch keamanan terbaru.`;
+                    processEl.innerHTML = `
+                        <div class="w-full space-y-1">
+                            <div class="text-xs font-bold text-blue-400">🔍 PROSES TAHAP 2: ANALISIS KERENTANAN LAYANAN</div>
+                            <div class="text-slate-300 text-[11px]">Memeriksa konfigurasi aplikasi internal di HP Target.</div>
+                            <div class="bg-slate-950 p-2 rounded border border-blue-500/30 text-emerald-400 font-mono text-[11px]">HASIL: Versi Layanan Terupdate v3.2 • Autentikasi: ENABLED • Celah: NONE</div>
+                        </div>
+                    `;
+                }
+                resultEl.innerHTML = `Tahap 2 Selesai: Analisis celah layanan selesai. Tekan <span class="text-cyan-400 font-bold">"Langkah Berikutnya"</span> untuk mengevaluasi sistem keamanan (Tahap 3).`;
+            } 
+            else if (modul1CurrentStep === 3) {
+                // TAHAP 3: Evaluasi Keamanan Sistem
+                if (modul1Mode === 'minim') {
+                    consoleEl.innerHTML += `<br><span class="text-red-400">></span> [Tahap 3] Cek keamanan: Akses pembatasan izin TIDAK AKTIF!`;
+                    processEl.innerHTML = `
+                        <div class="w-full space-y-1">
+                            <div class="text-xs font-bold text-red-400">🛡️ PROSES TAHAP 3: EVALUASI PERTAHANAN PERANGKAT</div>
+                            <div class="text-slate-300 text-[11px]">Mencoba menembus lapisan otorisasi file dan galeri.</div>
+                            <div class="bg-slate-950 p-2 rounded border border-red-500/30 text-red-400 font-mono text-[11px]">CHECK: Multi-Factor Auth (NO) | App Permission Sandbox (FAIL) -> PERMISSION GRANTED!</div>
+                        </div>
+                    `;
+                } else {
+                    consoleEl.innerHTML += `<br><span class="text-cyan-400">></span> [Tahap 3] Cek keamanan: Autentikasi kuat & Sandbox memblokir percobaan akses!`;
+                    processEl.innerHTML = `
+                        <div class="w-full space-y-1">
+                            <div class="text-xs font-bold text-cyan-400">🛡️ PROSES TAHAP 3: EVALUASI PERTAHANAN PERANGKAT</div>
+                            <div class="text-slate-300 text-[11px]">Mencoba menembus lapisan otorisasi file dan galeri.</div>
+                            <div class="bg-slate-950 p-2 rounded border border-cyan-500/30 text-emerald-400 font-mono text-[11px]">CHECK: Multi-Factor Auth (YES) | App Permission Sandbox (ACTIVE) -> ACCESS BLOCKED!</div>
+                        </div>
+                    `;
+                }
+                resultEl.innerHTML = `Tahap 3 Selesai: Pengecekan keamanan sistem telah diproses. Tekan <span class="text-cyan-400 font-bold">"Langkah Berikutnya"</span> untuk melihat hasil akhir pada data HP (Tahap 4).`;
+            } 
+            else if (modul1CurrentStep === 4) {
+                // TAHAP 4: Eksekusi Hasil & Perubahan Warna Data HP Target
+                if (modul1Mode === 'minim') {
+                    consoleEl.innerHTML += `<br><span class="text-red-400 font-bold">> [Tahap 4] AKSES BERHASIL! Data terekspos.</span>`;
+                    processEl.innerHTML = `
+                        <div class="w-full space-y-1">
+                            <div class="text-xs font-bold text-red-400">🚨 PROSES TAHAP 4: EKSEKUSI AKSES DATA TERBUKA</div>
+                            <div class="text-slate-300 text-[11px]">Penyerang berhasil membaca & mengunduh berkas sensitif dari HP target.</div>
+                            <div class="bg-slate-950 p-2 rounded border border-red-500/50 text-red-400 font-mono font-bold text-[11px]">STATUS DATA: UNPROTECTED / EXPOSED (TERPERAS)</div>
+                        </div>
+                    `;
+                    resultEl.innerHTML = `<span class="text-red-400 font-bold">Akses berhasil (Keamanan Minim).</span> Data galeri dan kontak target terekspos karena kelemahan keamanan.`;
+                    
+                    // Ubah warna data HP target jadi MERAH
+                    items.forEach(item => {
+                        item.className = "bg-red-500/10 border border-red-500/50 p-2.5 rounded-lg text-center text-xs text-red-400 font-bold transition-all duration-300 phone-data-item shadow-lg shadow-red-500/10";
+                    });
+                } else {
+                    consoleEl.innerHTML += `<br><span class="text-cyan-400 font-bold">> [Tahap 4] AKSES DITOLAK! Data tetap aman.</span>`;
+                    processEl.innerHTML = `
+                        <div class="w-full space-y-1">
+                            <div class="text-xs font-bold text-emerald-400">🔒 PROSES TAHAP 4: PERTAHANAN BERHASIL (AKSES DITOLAK)</div>
+                            <div class="text-slate-300 text-[11px]">Sistem HP target mengisolasi ancaman dan mengunci seluruh data pribadi.</div>
+                            <div class="bg-slate-950 p-2 rounded border border-emerald-500/50 text-emerald-400 font-mono font-bold text-[11px]">STATUS DATA: PROTECTED / ENCRYPTED (AMAN)</div>
+                        </div>
+                    `;
+                    resultEl.innerHTML = `<span class="text-cyan-400 font-bold">Akses ditolak (Keamanan Baik).</span> Mekanisme autentikasi kuat, enkripsi penyimpanan, dan pembatasan izin berhasil menggagalkan peretasan.`;
+                    
+                    // Ubah warna data HP target jadi HIJAU
+                    items.forEach(item => {
+                        item.className = "bg-emerald-500/10 border border-emerald-500/50 p-2.5 rounded-lg text-center text-xs text-emerald-400 font-bold transition-all duration-300 phone-data-item shadow-lg shadow-emerald-500/10";
+                    });
+                }
+            }
+            consoleEl.scrollTop = consoleEl.scrollHeight;
+        }
+
+        // --- Modul 2 ---
+        let modul2Mode = 'dengan';
+
+        function setModul2Mode(mode) {
+            modul2Mode = mode;
+            document.getElementById('btn-mode-tanpa').className = mode === 'tanpa' ? "p-3 rounded-xl border text-left bg-blue-500/10 border-blue-500 text-blue-300 font-medium text-sm" : "p-3 rounded-xl border text-left bg-slate-800/50 border-slate-700 text-slate-400 text-sm";
+            document.getElementById('btn-mode-dengan').className = mode === 'dengan' ? "p-3 rounded-xl border text-left bg-blue-500/10 border-blue-500 text-blue-300 font-medium text-sm" : "p-3 rounded-xl border text-left bg-slate-800/50 border-slate-700 text-slate-400 text-sm";
+            modul2Reset();
+        }
+
+        function toggleDataProcessPanel() {
+            const panel = document.getElementById('data-process-panel');
+            const icon = document.getElementById('process-toggle-icon');
+            panel.classList.toggle('hidden');
+            icon.innerText = panel.classList.contains('hidden') ? "[ Buka Panel ]" : "[ Tutup Panel ]";
+        }
+
+        function modul2Reset() {
+            document.getElementById('sender-box-msg').innerText = "[Pesan Asli]";
+            document.getElementById('channel-data-view').innerText = "Packet Data Stream...";
+            document.getElementById('observer-view').innerText = "Menunggu data melintas...";
+            document.getElementById('receiver-box-msg').innerText = "[Menunggu Pesan]";
+            document.getElementById('modul2-result-text').innerHTML = `Simulasi direset. Ketik pesan dan tekan <span class="text-blue-400 font-bold">"Kirim Pesan"</span> atau <span class="text-blue-400 font-bold">"Jalankan Semua"</span>.`;
+            ['1','2','3','4','5'].forEach(i => document.getElementById('proc-step-'+i).innerText = "-");
+        }
+
+        function modul2Send() { executeModul2(); }
+        function modul2RunAll() { executeModul2(); }
+
+        function executeModul2() {
+            const msg = document.getElementById('custom-message-input').value || "Halo, apa kabar?";
+            const b64 = btoa(unescape(encodeURIComponent(msg)));
+            
+            document.getElementById('sender-box-msg').innerText = msg;
+            document.getElementById('proc-step-1').innerText = msg;
+            document.getElementById('proc-step-2').innerText = b64;
+            document.getElementById('proc-step-3').innerText = msg;
+
+            if (modul2Mode === 'dengan') {
+                document.getElementById('proc-step-4').innerText = "gCM#9xZ!kL2a$v7Q...";
+                document.getElementById('channel-data-view').innerText = "Encrypted Ciphertext (AES-GCM)";
+                document.getElementById('observer-view').innerHTML = `<span class="text-yellow-400">Ciphertext Terkunci:</span> gCM#9xZ!... <br><span class="text-red-400 font-bold">Pesan asli tidak terbaca!</span>`;
+            } else {
+                document.getElementById('proc-step-4').innerText = "[Tanpa Enkripsi]";
+                document.getElementById('channel-data-view').innerText = msg;
+                document.getElementById('observer-view').innerHTML = `<span class="text-red-400 font-bold">Terbaca Jelas:</span> "${msg}"`;
+            }
+
+            document.getElementById('proc-step-5').innerText = msg;
+            document.getElementById('receiver-box-msg').innerText = msg;
+            document.getElementById('modul2-result-text').innerHTML = modul2Mode === 'dengan' 
+                ? `<span class="text-blue-400 font-bold">Komunikasi Aman dengan AES-GCM.</span> Pengamat hanya melihat ciphertext acak. Pesan berhasil diterima & didekripsi.`
+                : `<span class="text-yellow-400 font-bold">Komunikasi Tanpa Enkripsi.</span> Pesan sampai ke penerima, <span class="text-red-400 font-bold">namun pengamat jaringan dapat membaca seluruh isi pesan.</span>`;
+        }
+
+        function modul2TamperData() {
+            document.getElementById('channel-data-view').innerText = "[DATA DIMANIPULASI DI TENGAH JALAN!]";
+            document.getElementById('observer-view').innerText = modul2Mode === 'dengan' ? "Ciphertext rusak / Gagal verifikasi integritas!" : "Melihat data yang diubah!";
+            document.getElementById('receiver-box-msg').innerHTML = `<span class="text-red-400 font-bold">⚠️ Gagal Dekripsi / Integritas Rusak!</span>`;
+            document.getElementById('modul2-result-text').innerHTML = `<span class="text-red-400 font-bold">Manipulasi terdeteksi!</span> Perubahan data menyebabkan pemeriksaan integritas gagal pada AES-GCM.`;
+        }
+
+        // --- Modul 3 ---
+        let modul3Stage = 1;
+
+        function modul3Reset() {
+            modul3Stage = 1;
+            updateModul3();
+            document.getElementById('m3-view-stage1').classList.remove('hidden');
+            document.getElementById('m3-view-stage2').classList.add('hidden');
+            document.getElementById('m3-view-stage3').classList.add('hidden');
+            document.getElementById('m3-view-stage4').classList.add('hidden');
+            document.getElementById('geo-result-title').innerText = "Menunggu Proses GeoIP...";
+            document.getElementById('geo-result-desc').innerText = "Klik tombol 'Jalankan Proses GeoIP' di atas untuk melihat hasil pemetaan.";
+        }
+
+        function modul3Start() { modul3Stage = 2; updateModul3(); document.getElementById('m3-view-stage2').classList.remove('hidden'); }
+        function modul3NextStep() {
+            if (modul3Stage < 4) {
+                modul3Stage++;
+                updateModul3();
+                if (modul3Stage === 3) document.getElementById('m3-view-stage3').classList.remove('hidden');
+                if (modul3Stage === 4) document.getElementById('m3-view-stage4').classList.remove('hidden');
+            }
+        }
+
+        function showGeolocation() {
+            document.getElementById('geo-result-title').innerText = "Lokasi Perkiraan: Bandar Lampung, Indonesia";
+            document.getElementById('geo-result-desc').innerText = "Koordinat GeoIP: -5.4297, 105.2611 (Akurasi level Kota / ISP - Bukan GPS Akurat)";
+        }
+
+        function updateModul3() {
+            for(let i=1; i<=4; i++) {
+                const ind = document.getElementById('m3-stage-indicator-'+i);
+                ind.className = i <= modul3Stage ? "p-3 rounded-xl bg-slate-950 border border-cyan-500/50 text-cyan-300" : "p-3 rounded-xl bg-slate-950 border border-slate-800 opacity-60";
+            }
+        }
+    </script>
+</body>
+</html>
